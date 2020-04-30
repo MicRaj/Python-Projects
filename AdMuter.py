@@ -49,9 +49,9 @@ def MuteSpotifyTab(mute):
         volume = session.SimpleAudioVolume
         if session.Process and session.Process.name() == "Spotify.exe":
             if mute:
-                volume.SetMute(1, None)
+                volume.SetMute(True, None)
             else:
-                volume.SetMute(0, None)
+                volume.SetMute(False, None)
 
 
 if __name__ == '__main__':
