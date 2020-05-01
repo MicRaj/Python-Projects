@@ -18,6 +18,7 @@ class Heading:
     def draw(self, surface):
         surface.blit(self.headingImage, self.headingRect)
 
+
 class UIElement(Sprite):
 
     def __init__(self, centrePos, text, fontSize, bgRGB, textRGB, action=None, textEnlargeOnHighlight=1.2):

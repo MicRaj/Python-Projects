@@ -1,5 +1,9 @@
 # TicTacToe
 # By Michal Rajzer
+"""
+To Do:
+-add validation for place input
+"""
 
 
 def check_for_win(sym, grid):
@@ -18,7 +22,7 @@ def check_for_win(sym, grid):
 
 def check_full(grid):
     for i in grid:
-        if i not in ['X', 'Y']:
+        if i not in ['X', 'O']:
             return False
     return True
 
@@ -35,29 +39,34 @@ def print_grid(grid):
           '    '.format(*grid))
 
 
-game_grid = [i for i in range(1, 10)]
+def main():
+    game_grid = [i for i in range(1, 10)]
 
-symbols = ['X', 'Y']
-symbol = symbols[0]
-win = False
+    symbols = ['X', 'O']
+    symbol = symbols[0]
+    win = False
 
-while win is not True:
-    print_grid(game_grid)
+    while win is not True:
+        print_grid(game_grid)
 
-    position = int(input("Player " + symbol + " enter : \n"))
-    while game_grid[position - 1] in ['X', 'Y']:
-        position = int(input())
-    game_grid[position - 1] = symbol
+        position = int(input("Player " + symbol + " enter : \n"))
+        while game_grid[position - 1] in symbols:
+            position = int(input())
+        game_grid[position - 1] = symbol
 
-    if check_for_win(symbol, game_grid):
-        print(symbol + ' Win')
-        win = True
+        if check_for_win(symbol, game_grid):
+            print(symbol + ' Win')
+            win = True
 
-    elif check_full(game_grid):
-        print("Draw")
-        win = True
+        elif check_full(game_grid):
+            print("Draw")
+            win = True
 
-    if symbol == symbols[0]:
-        symbol = symbols[1]
-    else:
-        symbol = symbols[0]
+        if symbol == symbols[0]:
+            symbol = symbols[1]
+        else:
+            symbol = symbols[0]
+
+
+if __name__ == '__main__':
+    main()

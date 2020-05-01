@@ -1,4 +1,11 @@
 # MiniMax 'X' is Maximiser and 'O' is minimiser
+symbols = ['X', 'O']
+player = symbols[0]
+opponent = symbols[1]
+"""
+To Do:
+-add validation for place input
+"""
 
 
 def check_for_win(sym, grid):
@@ -119,13 +126,9 @@ def findBestMove(sym, grid):
     return best_move
 
 
-if __name__ == '__main__':
-
+def main():
     game_grid = [i for i in range(1, 10)]
-    symbols = ['X', 'O']
     symbol = symbols[0]
-    player = symbols[0]
-    opponent = symbols[1]
     win = False
 
     print_grid(game_grid)
@@ -155,3 +158,7 @@ if __name__ == '__main__':
             symbol = symbols[1]
         else:
             symbol = symbols[0]
+
+
+if __name__ == '__main__':
+    main()
