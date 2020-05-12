@@ -8,10 +8,11 @@ import copy
 To Do :
 - CreateGrid 
 - add a button to go back to start and edit - In progress, goes back to last edited grid
-- Add a save
+- Add a save 
+- save grid array to a text file line
+- Let user save 1,2,3 and read 1,2,3
 - let user adjust size of grid
-- Runsim
--Let user control speed
+- Let user control speed of sim
 '''
 # Colours
 BLUE = (106, 159, 181)
