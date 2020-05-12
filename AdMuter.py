@@ -5,7 +5,9 @@ import spotipy
 import spotipy.util as util
 import time
 from pycaw.pycaw import AudioUtilities
-import simpleaudio
+from pygame import mixer
+
+# Need To Quieten the pink2.wav
 
 # ===============================================SETUP=====================================================
 
@@ -16,6 +18,7 @@ import simpleaudio
 
 spotifyAccessScope = 'user-read-currently-playing user-modify-playback-state'
 spotifyRedirectURI = 'http://google.com/'
+mixer.init(96000, 16, 2, 1024)
 
 
 def setupSpotifyObject(username, scope, clientID, clientSecret, redirectURI):
@@ -25,7 +28,7 @@ def setupSpotifyObject(username, scope, clientID, clientSecret, redirectURI):
 
 def main():
     global spotifyObject
-    global waveObject
+    global playWav
 
     try:
         trackInfo = spotifyObject.current_user_playing_track()
@@ -37,11 +40,19 @@ def main():
 
     try:
         if trackInfo['currently_playing_type'] == 'ad':
-            MuteSpotifyTab(True)
-            waveObject.play()
+            if not playWav:
+                MuteSpotifyTab(True)
+                print("Playing pink panther")
+                mixer.music.load('PinkPanther.wav')
+                mixer.music.play()
+                playWav = True
         else:
             MuteSpotifyTab(False)
-            waveObject.play().stop()
+            if playWav:
+                print("Stopping pink panther")
+                mixer.music.stop()
+                playWav = False
+
     except TypeError:
         pass
 
@@ -61,8 +72,7 @@ def MuteSpotifyTab(mute):
 if __name__ == '__main__':
     spotifyObject = setupSpotifyObject(spotifyUsername, spotifyAccessScope, spotifyClientID, spotifyClientSecret,
                                        spotifyRedirectURI)
-    waveObject = simpleaudio.WaveObject.from_wave_file('PinkPanther.wav')
-
+    playWav = False
     while True:
         main()
         time.sleep(1)

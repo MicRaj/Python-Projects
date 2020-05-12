@@ -7,10 +7,11 @@ import copy
 '''
 To Do :
 - CreateGrid 
-- add a button to go back to start and edit - In progress, goesd back to last edited grid
-- add a button to clear
+- add a button to go back to start and edit - In progress, goes back to last edited grid
 - Add a save
 - let user adjust size of grid
+- Runsim
+-Let user control speed
 '''
 # Colours
 BLUE = (106, 159, 181)
@@ -144,11 +145,11 @@ def createGrid(screen, cellGrid=None):
         bgRGB=BLACK,
         textRGB=WHITE,
         text='Clear',
-        action=None,
+        action=GameState.CREATE,
         textEnlargeOnHighlight=1.05
     )
 
-    buttons = [startButton, returnButton]
+    buttons = [startButton, returnButton,clearButton]
     if cellGrid is None:
         cellGrid = Culture(size[0], size[1])
     cellCoordinates = cellLocations(width, height, margin, cellGrid.grid)
@@ -178,6 +179,8 @@ def createGrid(screen, cellGrid=None):
         for button in buttons:
             uiAction = button.update(pygame.mouse.get_pos(), mouseUp)
             if uiAction is not None:
+                if button == clearButton:
+                    return uiAction, cellGrid.clear()
                 return uiAction, cellGrid
             button.draw(screen)
 

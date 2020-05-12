@@ -16,6 +16,8 @@ import random
 class Culture:
     # Initialises  and creates a 2D array with a specified number of rows and columns
     def __init__(self, row, columns):
+        self.row = row
+        self.columns = columns
         self.grid = []
         for r in range(row):
             subList = []
@@ -58,6 +60,16 @@ class Culture:
     # Allows an array to be inputted
     def new(self, cGrid):
         self.grid = cGrid
+        self.row = len(cGrid)
+        self.columns = len(cGrid[0])
+
+    def clear(self):
+        self.grid = []
+        for r in range(self.row):
+            subList = []
+            for c in range(self.columns):
+                subList.append(0)
+            self.grid.append(subList)
 
     def rawGrid(self):
         return self.grid
