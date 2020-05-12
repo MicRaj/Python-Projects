@@ -2,6 +2,11 @@
 # By Michal Rajzer
 # 9x9 Sudoku
 
+"""
+-Make a gui
+-let user try and solve it and show the backtracking process
+"""
+
 grid = [[0, 0, 0, 0, 0, 0, 2, 3, 4],
         [0, 1, 0, 0, 0, 0, 0, 0, 0],
         [0, 0, 0, 0, 0, 0, 0, 0, 0],
@@ -26,7 +31,7 @@ def possible(y, x, n):
             return False
 
     # Check if number is present in the square
-    quadrantX = (x // 3) * 3  # Topleft of the square x n y
+    quadrantX = (x // 3) * 3  # Top left of the square x n y
     quadrantY = (y // 3) * 3
     for i in range(3):
         for j in range(3):
