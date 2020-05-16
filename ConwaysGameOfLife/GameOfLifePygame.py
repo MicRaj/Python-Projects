@@ -7,7 +7,6 @@ import copy
 '''
 To Do :
 - CreateGrid 
-- add a button to go back to start and edit - In progress, goes back to last edited grid
 - Add a save 
 - save grid array to a text file line
 - Let user save 1,2,3 and read 1,2,3
