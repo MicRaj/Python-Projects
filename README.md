@@ -8,3 +8,5 @@ Some projects I have been working on.
 -Snake
 
 -Ad Muter for Spotify
+
+-A* Path Finding Algorithm Visualization
