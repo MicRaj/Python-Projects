@@ -24,7 +24,7 @@ def getXY():
         try:
             x = int(input("Input X: "))
             y = int(input("Input Y: "))
-            if 0 <= x <= 2 and y >= 0 and y <= 2:
+            if 0 <= x <= 2 and 0 <= y <= 2:
                 return x, y
         except TypeError:
             print("Error")

@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="155b2e25-a4aa-4aa5-920b-e416f41120ac" name="Default Changelist" comment="" />
+    <list default="true" id="155b2e25-a4aa-4aa5-920b-e416f41120ac" name="Default Changelist" comment="">
+      <change afterPath="$PROJECT_DIR$/../Snake/.idea/Snake.iml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../Snake/Snake.py" beforeDir="false" afterPath="$PROJECT_DIR$/../Snake/Snake.py" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/OLD/Tic Tac Toe.py" beforeDir="false" afterPath="$PROJECT_DIR$/OLD/Tic Tac Toe.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -14,13 +19,18 @@
       </list>
     </option>
   </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$/.." />
+  </component>
   <component name="ProjectId" id="1bECVwL4UoFOg9ylWKSeOKK1Nsp" />
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/.." />
     <property name="restartRequiresConfirmation" value="false" />
     <property name="settings.editor.selected.configurable" value="com.jetbrains.python.configuration.PyActiveSdkModuleConfigurable" />
   </component>
@@ -141,21 +151,25 @@
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
     <state x="414" y="175" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1588966255331" />
-    <state width="1899" height="97" key="GridCell.Tab.0.bottom" timestamp="1588966302455">
+    <state x="740" y="275" key="FileChooserDialogImpl" timestamp="1589659264438">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1899" height="97" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1588966302455" />
-    <state width="1899" height="97" key="GridCell.Tab.0.center" timestamp="1588966302455">
+    <state x="740" y="275" key="FileChooserDialogImpl/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1589659264438" />
+    <state width="1899" height="97" key="GridCell.Tab.0.bottom" timestamp="1589659265699">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1899" height="97" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1588966302455" />
-    <state width="1899" height="97" key="GridCell.Tab.0.left" timestamp="1588966302455">
+    <state width="1899" height="97" key="GridCell.Tab.0.bottom/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1589659265699" />
+    <state width="1899" height="97" key="GridCell.Tab.0.center" timestamp="1589659265698">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1899" height="97" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1588966302455" />
-    <state width="1899" height="97" key="GridCell.Tab.0.right" timestamp="1588966302455">
+    <state width="1899" height="97" key="GridCell.Tab.0.center/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1589659265698" />
+    <state width="1899" height="97" key="GridCell.Tab.0.left" timestamp="1589659265698">
       <screen x="0" y="0" width="1920" height="1040" />
     </state>
-    <state width="1899" height="97" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1588966302455" />
+    <state width="1899" height="97" key="GridCell.Tab.0.left/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1589659265698" />
+    <state width="1899" height="97" key="GridCell.Tab.0.right" timestamp="1589659265699">
+      <screen x="0" y="0" width="1920" height="1040" />
+    </state>
+    <state width="1899" height="97" key="GridCell.Tab.0.right/0.0.1920.1040/1920.0.1920.1040@0.0.1920.1040" timestamp="1589659265699" />
   </component>
 </project>

@@ -45,12 +45,12 @@ class Food:
         self.w_tiles = screen_width // sq_size
         self.h_tiles = screen_height // sq_size
 
-        self.x = random.randint(0, self.w_tiles) * sq_size
-        self.y = random.randint(0, self.h_tiles) * sq_size
+        self.x = random.randint(1, self.w_tiles - 1) * sq_size
+        self.y = random.randint(1, self.h_tiles - 1) * sq_size
 
     def new_place(self):
-        self.x = random.randint(0, self.w_tiles) * sq_size
-        self.y = random.randint(0, self.h_tiles) * sq_size
+        self.x = random.randint(1, self.w_tiles - 1) * sq_size
+        self.y = random.randint(1, self.h_tiles - 1) * sq_size
 
     @property
     def place(self):
@@ -74,14 +74,15 @@ pygame.display.set_caption("Snake   Score : 0")
 # Obj
 snake = Snake(start_vel=[0, -sq_size], start_len=4)
 food = Food()
+food2 = Food()
 clock = pygame.time.Clock()
 score = 0
-game_objects = [snake, food]
+game_objects = [snake, food, food2]
 
 # Main loop
 game_over = False
 while not game_over:
-    clock.tick(10)
+    clock.tick(6)
     # Check for events
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
@@ -141,6 +142,14 @@ while not game_over:
         food.new_place()
         while food.place in snake.full_snake:
             food.new_place()
+        score += 1
+        pygame.display.set_caption("Snake   Score : " + str(score))
+
+    if snake.head == food2.place:
+        snake.eat()
+        food2.new_place()
+        while food.place in snake.full_snake:
+            food2.new_place()
         score += 1
         pygame.display.set_caption("Snake   Score : " + str(score))
 
