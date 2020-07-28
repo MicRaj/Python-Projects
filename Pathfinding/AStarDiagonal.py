@@ -1,5 +1,6 @@
 # A* Path Finding Algorithm
 import pygame
+import math
 from queue import PriorityQueue
 
 pygame.init()
@@ -9,7 +10,7 @@ pygame.display.set_caption("A* Path Finding Algorithm")
 
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
-BLUE = (0, 0, 255)
+BLUE = (0, 255, 0)
 YELLOW = (255, 255, 0)
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -83,6 +84,22 @@ class Spot:
         if self.col < self.total_rows - 1 and not grid[self.row][self.col - 1].is_barrier():  # LEFT
             self.neighbours.append(grid[self.row][self.col - 1])
 
+        if self.col < self.total_rows - 1 and self.row < self.total_rows - 1 and not grid[self.row + 1][
+            self.col - 1].is_barrier():  # DOWN LEFT
+            self.neighbours.append(grid[self.row + 1][self.col - 1])
+
+        if self.col < self.total_rows - 1 and self.row < self.total_rows - 1 and not grid[self.row + 1][
+            self.col + 1].is_barrier():  # DOWN RIGHT
+            self.neighbours.append(grid[self.row + 1][self.col + 1])
+
+        if self.col < self.total_rows - 1 and self.row < self.total_rows - 1 and not grid[self.row - 1][
+            self.col - 1].is_barrier():  # UP LEFT
+            self.neighbours.append(grid[self.row - 1][self.col - 1])
+
+        if self.col < self.total_rows - 1 and self.row < self.total_rows - 1 and not grid[self.row - 1][
+            self.col + 1].is_barrier():  # UP RIGHT
+            self.neighbours.append(grid[self.row - 1][self.col + 1])
+
     def __lt__(self, other):
         return False
 
@@ -90,7 +107,7 @@ class Spot:
 def h(p1, p2):
     x1, y1 = p1
     x2, y2 = p2
-    return abs(x1 - x2) + abs(y1 - y2)
+    return math.sqrt(abs(x1 - x2) ** 2 + abs(y1 - y2) ** 2)
 
 
 def make_grid(rows, width):
@@ -248,7 +265,6 @@ def main(win, width):
                     start = None
                     end = None
                     grid = make_grid(ROWS, width)
-                    surround_barrier(grid, ROWS)
 
     pygame.quit()
 

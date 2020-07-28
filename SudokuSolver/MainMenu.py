@@ -1,11 +1,19 @@
 
 from PygameUI import *
 from enum import Enum
-import SudokuPygame
+# import SudokuPygame
 # Colours
 
-BLUE = (106, 159, 181)
+RED = (255, 0, 0)
+GREEN = (0, 255, 0)
+BLUE = (0, 0, 255)
+YELLOW = (255, 255, 0)
 WHITE = (255, 255, 255)
+BLACK = (0, 0, 0)
+PURPLE = (128, 0, 128)
+ORANGE = (255, 165, 0)
+GREY = (128, 128, 128)
+TURQUOISE = (64, 224, 208)
 
 
 class GameState(Enum):
@@ -32,24 +40,24 @@ def menu():
 def titleScreen(screen):
     title = Heading(
         centrePos=(400, 200),
-        fontSize=60,
-        bgRGB=BLUE,
-        textRGB=WHITE,
+        fontSize=100,
+        bgRGB=WHITE,
+        textRGB=BLACK,
         text='SUDOKU'
     )
     startButton = UIElement(
         centrePos=(400, 400),
         fontSize=50,
-        bgRGB=BLUE,
-        textRGB=WHITE,
+        bgRGB=WHITE,
+        textRGB=BLACK,
         text='Start',
         action=GameState.NEWGAME
     )
     quitButton = UIElement(
         centrePos=(400, 500),
         fontSize=30,
-        bgRGB=BLUE,
-        textRGB=WHITE,
+        bgRGB=WHITE,
+        textRGB=BLACK,
         text='QUIT',
         action=GameState.QUIT
     )
@@ -59,10 +67,14 @@ def titleScreen(screen):
     while True:
         mouseUp = False
         for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+
             if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
                 mouseUp = True
 
-        screen.fill(BLUE)
+        screen.fill(WHITE)
 
         for button in buttons:
             uiAction = button.update(pygame.mouse.get_pos(), mouseUp)
@@ -86,6 +98,9 @@ def playLevel(screen):
     while True:
         mouseUp = False
         for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
             if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
                 mouseUp = True
         screen.fill(BLUE)

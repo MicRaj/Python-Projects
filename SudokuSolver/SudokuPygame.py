@@ -8,7 +8,7 @@ pygame.init()
 
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
-BLUE = (0, 255, 0)
+BLUE = (0, 0, 255)
 YELLOW = (255, 255, 0)
 WHITE = (255, 255, 255)
 BLACK = (0, 0, 0)
@@ -277,7 +277,7 @@ def main():
 
 # UI
 heading = Heading(
-    centrePos=(WIN_WIDTH/2, 75),
+    centrePos=(WIN_WIDTH / 2, 75),
     text="SUDOKU",
     fontSize=100,
     bgRGB=WHITE,
