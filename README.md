@@ -10,3 +10,5 @@ Some projects I have been working on.
 -Ad Muter for Spotify
 
 -A* Path Finding Algorithm Visualization
+
+-Sudoku Solver
