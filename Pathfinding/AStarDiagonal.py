@@ -265,6 +265,7 @@ def main(win, width):
                     start = None
                     end = None
                     grid = make_grid(ROWS, width)
+                    surround_barrier(grid, ROWS)
 
     pygame.quit()
 
