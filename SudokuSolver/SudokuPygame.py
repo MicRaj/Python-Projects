@@ -17,8 +17,8 @@ ORANGE = (255, 165, 0)
 GREY = (128, 128, 128)
 TURQUOISE = (64, 224, 208)
 
-WIN_WIDTH, WIN_HEIGHT = 800, 800
-WIDTH = 600
+WIN_WIDTH, WIN_HEIGHT = 800, 700
+WIDTH = 500
 ROWS = 9
 WIN = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
 pygame.display.set_caption("Sudoku")
@@ -323,4 +323,5 @@ def drawUI(display):
 #
 #
 # print(check(sudoku_grid))
-main()
+if __name__ == '__main__':
+    main()
