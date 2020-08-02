@@ -3,8 +3,12 @@ import pygame.freetype
 import copy
 from PygameUI import *
 from enum import Enum
-
-pygame.init()
+import pickle
+'''
+ - Save button when playing
+ - reset spot.x and spot.y when window has been resized
+ - add levels
+'''
 
 RED = (255, 0, 0)
 GREEN = (0, 255, 0)
@@ -23,6 +27,7 @@ ROWS = 9
 WIN = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
 pygame.display.set_caption("Sudoku")
 GAP = WIDTH / ROWS
+save_file = 'sudoku.txt'
 
 # OFFSET_X = (WIN_WIDTH - WIDTH) // 2
 # OFFSET_Y = (WIN_HEIGHT - WIDTH) // 2
@@ -56,16 +61,32 @@ class GameState(Enum):
     QUIT = -1
     TITLE = 0
     PLAY = 1
+    MAKEGRID = 2
+    LOAD = 3
+    SAVE = 4
 
 
 def menu():
-    game_state = GameState.TITLE
+    pygame.init()
 
+    game_state = GameState.TITLE
+    spot_grid = create_spot_grid(sudoku_grid)
     while True:
         if game_state == GameState.TITLE:
             game_state = title_screen(WIN)
+
+        if game_state == GameState.LOAD:
+            game_state, spot_grid = load_screen(WIN)
+
         if game_state == GameState.PLAY:
-            game_state = play(WIN, create_spot_grid(sudoku_grid))
+            game_state = play(WIN, spot_grid)
+
+        if game_state == GameState.MAKEGRID:
+            game_state, spot_grid = make_sudoku(WIN)
+
+        if game_state == GameState.SAVE:
+            game_state = save(WIN, spot_grid)
+
         if game_state == GameState.QUIT:
             pygame.quit()
 
@@ -79,12 +100,21 @@ def title_screen(screen):
         text='SUDOKU'
     )
     start_button = UIElement(
-        centrePos=(400, 400),
+        centrePos=(400, 300),
         fontSize=50,
         bgRGB=WHITE,
         textRGB=BLACK,
         text='Start',
-        action=GameState.PLAY
+        action=GameState.LOAD
+    )
+
+    create_button = UIElement(
+        centrePos=(400, 400),
+        fontSize=50,
+        bgRGB=WHITE,
+        textRGB=BLACK,
+        text='Create',
+        action=GameState.MAKEGRID
     )
     quit_button = UIElement(
         centrePos=(400, 500),
@@ -95,7 +125,7 @@ def title_screen(screen):
         action=GameState.QUIT
     )
 
-    buttons = [start_button, quit_button]
+    buttons = [start_button, create_button, quit_button]
 
     while True:
         mouse_up = False
@@ -116,7 +146,76 @@ def title_screen(screen):
             button.draw(screen)
 
         title.draw(screen)
-        pygame.display.flip()
+        pygame.display.update()
+
+
+def load_screen(screen):
+    title = Heading(
+        centrePos=(400, 100),
+        fontSize=100,
+        bgRGB=WHITE,
+        textRGB=BLACK,
+        text='SUDOKU'
+    )
+    load1 = UIElement(
+        centrePos=(400, 200),
+        fontSize=50,
+        bgRGB=WHITE,
+        textRGB=BLACK,
+        text='1',
+        action=GameState.PLAY
+    )
+    load2 = UIElement(
+        centrePos=(400, 300),
+        fontSize=50,
+        bgRGB=WHITE,
+        textRGB=BLACK,
+        text='2',
+        action=GameState.PLAY
+    )
+    load3 = UIElement(
+        centrePos=(400, 400),
+        fontSize=50,
+        bgRGB=WHITE,
+        textRGB=BLACK,
+        text='3',
+        action=GameState.PLAY
+    )
+    return_button = UIElement(
+        centrePos=(400, 500),
+        fontSize=30,
+        bgRGB=WHITE,
+        textRGB=BLACK,
+        text='Return',
+        action=GameState.TITLE
+    )
+
+    buttons = [load1, load2, load3, return_button]
+    loads = [load1, load2, load3]
+
+    while True:
+        mouse_up = False
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+
+            if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
+                mouse_up = True
+
+        screen.fill(WHITE)
+        spot_grid = None
+        for button in buttons:
+            ui_action = button.update(pygame.mouse.get_pos(), mouse_up)
+            if ui_action is not None:
+                if button in loads:
+                    saved_grids = get_pickled(save_file)
+                    spot_grid = saved_grids[loads.index(button)]
+
+                return ui_action, spot_grid
+            button.draw(screen)
+        title.draw(screen)
+        pygame.display.update()
 
 
 def play(screen, spot_grid):
@@ -171,7 +270,9 @@ def play(screen, spot_grid):
                         # Solves and tells you which ones u got right
                         # Add show steps button
                         user_grid = copy.deepcopy(spot_grid)
-                        spot_grid = create_spot_grid(sudoku_grid)
+                        for i in range(ROWS):
+                            for j in range(ROWS):
+                                spot_grid[i][j].reset_full()
                         solve(spot_grid)
                         for i in range(ROWS):
                             for j in range(ROWS):
@@ -188,7 +289,7 @@ def play(screen, spot_grid):
                     # Arrow Keys to select
                     if event.key == pygame.K_UP:
                         if selected:
-                            spot = spot_grid[selected.row - 1][ selected.col]
+                            spot = spot_grid[selected.row - 1][selected.col]
                             selected.unselect()
                             selected = spot
                             selected.select()
@@ -212,7 +313,7 @@ def play(screen, spot_grid):
 
                     if event.key == pygame.K_RIGHT:
                         if selected:
-                            if selected.row + 1 < ROWS:
+                            if selected.col + 1 < ROWS:
                                 spot = spot_grid[selected.row][selected.col + 1]
                             else:
                                 spot = spot_grid[selected.row][0]
@@ -243,6 +344,204 @@ def play(screen, spot_grid):
             pygame.display.update()
 
 
+def make_sudoku(screen):
+    heading = Heading(
+        centrePos=(WIN_WIDTH / 2, 75),
+        text="SUDOKU",
+        fontSize=100,
+        bgRGB=WHITE,
+        textRGB=BLACK,
+    )
+    play_button = UIElement(
+        centrePos=(675, 370),
+        fontSize=30,
+        bgRGB=WHITE,
+        textRGB=BLACK,
+        text='Start',
+        action=GameState.PLAY
+    )
+    save_button = UIElement(
+        centrePos=(675, 470),
+        fontSize=30,
+        bgRGB=WHITE,
+        textRGB=BLACK,
+        text='Save',
+        action=GameState.SAVE
+    )
+    return_button = UIElement(
+        centrePos=(675, 570),
+        fontSize=30,
+        bgRGB=WHITE,
+        textRGB=BLACK,
+        text='Return',
+        action=GameState.TITLE
+    )
+    buttons = [play_button, save_button, return_button]
+    spot_grid = create_spot_grid([[0 for _ in range(9)] for __ in range(9)])
+    selected = None
+    while True:
+        mouse_up = False
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+
+            if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
+                mouse_up = True
+
+            if event.type == pygame.KEYDOWN:
+                for i in range(ROWS):
+                    for j in range(ROWS):
+                        spot_grid[i][j].reset()
+
+                if event.unicode in [str(i) for i in range(1, 10)] and selected:
+                    selected.change_val(event.unicode)
+
+                if event.key == pygame.K_BACKSPACE:
+                    # Clears selected space
+                    if selected:
+                        selected.change_val(0)
+
+                if event.key == pygame.K_r:
+                    for i in range(ROWS):
+                        for j in range(ROWS):
+                            spot_grid[i][j].reset_full()
+
+                # Arrow Keys to select
+                if event.key == pygame.K_UP:
+                    if selected:
+                        spot = spot_grid[selected.row - 1][selected.col]
+                        selected.unselect()
+                        selected = spot
+                        selected.select()
+
+                if event.key == pygame.K_DOWN:
+                    if selected:
+                        if selected.row + 1 < ROWS:
+                            spot = spot_grid[selected.row + 1][selected.col]
+                        else:
+                            spot = spot_grid[0][selected.col]
+                        selected.unselect()
+                        selected = spot
+                        selected.select()
+
+                if event.key == pygame.K_LEFT:
+                    if selected:
+                        spot = spot_grid[selected.row][selected.col - 1]
+                        selected.unselect()
+                        selected = spot
+                        selected.select()
+
+                if event.key == pygame.K_RIGHT:
+                    if selected:
+                        if selected.col + 1 < ROWS:
+                            spot = spot_grid[selected.row][selected.col + 1]
+                        else:
+                            spot = spot_grid[selected.row][0]
+                        selected.unselect()
+                        selected = spot
+                        selected.select()
+
+            if pygame.mouse.get_pressed()[0]:
+                pos = pygame.mouse.get_pos()
+                if get_clicked_spot(pos):
+                    row, col = get_clicked_spot(pos)
+                    spot = spot_grid[row][col]
+                    if spot != selected:
+                        if selected:
+                            selected.unselect()
+                        selected = spot
+                        spot.select()
+                        # print(selected.row, selected.col)
+
+        screen.fill(WHITE)
+        draw_grid(screen, spot_grid)
+        heading.draw(screen)
+        for button in buttons:
+            ui_action = button.update(pygame.mouse.get_pos(), mouse_up)
+            if ui_action is not None:
+                for i in range(ROWS):
+                    for j in range(ROWS):
+                        if spot_grid[i][j].get_val():
+                            spot_grid[i][j].make_unchangeable()
+                            spot_grid[i][j].unselect()
+
+                return ui_action, spot_grid
+            button.draw(WIN)
+        pygame.display.update()
+
+
+def save(screen, spot_grid):
+    title = Heading(
+        centrePos=(400, 100),
+        fontSize=100,
+        bgRGB=WHITE,
+        textRGB=BLACK,
+        text='SUDOKU'
+    )
+    save1 = UIElement(
+        centrePos=(400, 200),
+        fontSize=50,
+        bgRGB=WHITE,
+        textRGB=BLACK,
+        text='1',
+        action=GameState.TITLE
+    )
+    save2 = UIElement(
+        centrePos=(400, 300),
+        fontSize=50,
+        bgRGB=WHITE,
+        textRGB=BLACK,
+        text='2',
+        action=GameState.TITLE
+    )
+    save3 = UIElement(
+        centrePos=(400, 400),
+        fontSize=50,
+        bgRGB=WHITE,
+        textRGB=BLACK,
+        text='3',
+        action=GameState.TITLE
+    )
+    return_button = UIElement(
+        centrePos=(400, 500),
+        fontSize=30,
+        bgRGB=WHITE,
+        textRGB=BLACK,
+        text='Return',
+        action=GameState.TITLE
+    )
+
+    buttons = [save1, save2, save3, return_button]
+    saves = [save1, save2, save3]
+
+    while True:
+        mouse_up = False
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                pygame.quit()
+                exit()
+
+            if event.type == pygame.MOUSEBUTTONUP and event.button == 1:
+                mouse_up = True
+
+        screen.fill(WHITE)
+        for button in buttons:
+            ui_action = button.update(pygame.mouse.get_pos(), mouse_up)
+            if ui_action is not None:
+                if button in saves:
+                    saved_grids = get_pickled(save_file)
+                    save_num = saves.index(button)
+                    saved_grids[save_num] = spot_grid
+                    pickle_grids(save_file, saved_grids)
+                return ui_action
+            button.draw(screen)
+        title.draw(screen)
+        pygame.display.update()
+
+
+# Game Logic
+
 class Spot:
     def __init__(self, val, x, y, row, col, changeable=True):
         self.val = val
@@ -262,6 +561,9 @@ class Spot:
 
     def unselect(self):
         self.selected = False
+
+    def make_unchangeable(self):
+        self.changeable = False
 
     def change_val(self, val, priority=False):
         if self.changeable or priority:
@@ -365,13 +667,12 @@ def possible(spot_grid, y, x, n):
             return False
 
     # Check if number is present in the square
-    quadrantX = (x // 3) * 3  # Top left of the square x n y
-    quadrantY = (y // 3) * 3
+    quadrant_x = (x // 3) * 3  # Top left of the square x n y
+    quadrant_y = (y // 3) * 3
     for i in range(3):
         for j in range(3):
-            if spot_grid[quadrantY + i][quadrantX + j].get_val() == n:
+            if spot_grid[quadrant_y + i][quadrant_x + j].get_val() == n:
                 return False
-
     return True
 
 
@@ -400,15 +701,29 @@ def solve(spot_grid):
                 for n in range(1, 10):
                     if possible(spot_grid, y, x, n):
                         spot_grid[y][x].change_val(n)
-                        WIN.fill(WHITE)
-                        draw_grid(WIN, spot_grid)
-                        pygame.display.update()
+                        # WIN.fill(WHITE)
+                        # draw_grid(WIN, spot_grid)
+                        # pygame.display.update()
                         if solve(spot_grid):
                             return True
                         else:
                             spot_grid[y][x].change_val(0)
                 return False
     return True
+
+
+# Pickle
+def get_pickled(file_name):
+    file = open(file_name, 'rb')
+    grid_arr = pickle.load(file)
+    file.close()
+    return grid_arr
+
+
+def pickle_grids(file_name, grid_arr):
+    file = open(file_name, 'wb')
+    # noinspection PyArgumentList
+    pickle.dump(grid_arr, file)
 
 
 def main():
