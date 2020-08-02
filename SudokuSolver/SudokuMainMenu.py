@@ -26,6 +26,7 @@ WIDTH = 500
 ROWS = 9
 WIN = pygame.display.set_mode((WIN_WIDTH, WIN_HEIGHT))
 pygame.display.set_caption("Sudoku")
+pygame.display.set_icon(pygame.image.load("sudoku-icon.PNG"))
 GAP = WIDTH / ROWS
 save_file = 'sudoku.txt'
 
