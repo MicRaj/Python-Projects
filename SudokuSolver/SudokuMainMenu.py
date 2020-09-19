@@ -168,28 +168,28 @@ def load_screen(screen):
         action=GameState.PLAY
     )
 
-    save1 = UIElement(
+    load1 = UIElement(
         centrePos=(400, 300),
         fontSize=50,
         bgRGB=WHITE,
         textRGB=BLACK,
-        text='Save 1',
+        text='Load 1',
         action=GameState.PLAY
     )
-    save2 = UIElement(
+    load2 = UIElement(
         centrePos=(400, 350),
         fontSize=50,
         bgRGB=WHITE,
         textRGB=BLACK,
-        text='Save 2',
+        text='Load 2',
         action=GameState.PLAY
     )
-    save3 = UIElement(
+    load3 = UIElement(
         centrePos=(400, 400),
         fontSize=50,
         bgRGB=WHITE,
         textRGB=BLACK,
-        text='Save 3',
+        text='Load 3',
         action=GameState.PLAY
     )
 
@@ -202,9 +202,9 @@ def load_screen(screen):
         action=GameState.TITLE
     )
 
-    buttons = [level1, level2, level3, save1, save2, save3, return_button]
+    buttons = [level1, level2, level3, load1, load2, load3, return_button]
     levels = [level1, level2, level3]
-    saves = [save1, save2, save3]
+    saves = [load1, load2, load3]
 
     while True:
         mouse_up = False
@@ -365,6 +365,9 @@ def play(screen, spot_grid):
             for button in buttons:
                 ui_action = button.update(pygame.mouse.get_pos(), mouse_up)
                 if ui_action is not None:
+                    for i in range(ROWS):
+                        for j in range(ROWS):
+                            spot_grid[i][j].unselect()
                     return ui_action, spot_grid
                 button.draw(screen)
             pygame.display.update()
@@ -510,7 +513,7 @@ def save(screen, spot_grid):
         fontSize=50,
         bgRGB=WHITE,
         textRGB=BLACK,
-        text='1',
+        text=' Save 1',
         action=GameState.TITLE
     )
     save2 = UIElement(
@@ -518,7 +521,7 @@ def save(screen, spot_grid):
         fontSize=50,
         bgRGB=WHITE,
         textRGB=BLACK,
-        text='2',
+        text=' Save 2',
         action=GameState.TITLE
     )
     save3 = UIElement(
@@ -526,7 +529,7 @@ def save(screen, spot_grid):
         fontSize=50,
         bgRGB=WHITE,
         textRGB=BLACK,
-        text='3',
+        text='Save 3',
         action=GameState.TITLE
     )
     return_button = UIElement(
