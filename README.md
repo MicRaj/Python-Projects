@@ -1,5 +1,5 @@
 # Python-Projects
-Some projects I have been working on.
+Some projects I have been working on to help me learn Python.
 
 -Conways Game Of Life
 
